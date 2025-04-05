@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  Container,
+  Stack
+} from "@mui/material";
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
-  const [editingUser, setEditingUser] = useState(null); // Track the user being edited
+  const [editingUser, setEditingUser] = useState(null);
   const [formData, setFormData] = useState({ name: "", email: "", username: "" });
 
-  // Fetch users from the backend
   const getUsers = async () => {
     try {
       const response = await axios.get("http://localhost:3000/users");
@@ -17,7 +26,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Delete user
   const deleteUser = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
@@ -29,23 +37,20 @@ const AdminDashboard = () => {
     }
   };
 
-  // Edit user: Show form with current user data
   const handleEdit = (user) => {
     setEditingUser(user._id);
     setFormData({ name: user.name, email: user.email, username: user.username });
   };
 
-  // Handle form input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Save edited user
   const saveUser = async (id) => {
     try {
       await axios.patch(`http://localhost:3000/users/${id}`, formData);
       setEditingUser(null);
-      getUsers(); // Refresh the user list after updating
+      getUsers();
     } catch (error) {
       console.error(error);
     }
@@ -56,84 +61,80 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="container my-5">
-      <h3 className="text-center text-white mb-4">Admin Dashboard</h3>
-      <div className="row justify-content-center">
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Typography variant="h4" align="center" gutterBottom color="primary">
+        Admin Dashboard
+      </Typography>
+      <Grid container spacing={4}>
         {users.map((user) => (
-          <div key={user._id} className="col-md-4 mb-4">
-            <div className="card bg-black">
-              <div className="card-body">
+          <Grid item xs={12} sm={6} md={4} key={user._id}>
+            <Card sx={{ backgroundColor: "#1e1e1e", color: "white" }}>
+              <CardContent>
                 {editingUser === user._id ? (
-                  <>
-                    <div className="mb-3">
-                      <label className="form-label text-white">Name</label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="form-control"
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label text-white">Email</label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="form-control"
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label text-white">Username</label>
-                      <input
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        className="form-control"
-                      />
-                    </div>
-                    <div className="d-flex justify-content-center gap-2">
-                      <button
-                        className="btn btn-success btn-sm"
-                        onClick={() => saveUser(user._id)}
-                      >
+                  <Box>
+                    <TextField
+                      fullWidth
+                      label="Name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      margin="normal"
+                      variant="outlined"
+                      InputLabelProps={{ style: { color: "#fff" } }}
+                      InputProps={{ style: { color: "#fff" } }}
+                    />
+                    <TextField
+                      fullWidth
+                      label="Email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      margin="normal"
+                      variant="outlined"
+                      InputLabelProps={{ style: { color: "#fff" } }}
+                      InputProps={{ style: { color: "#fff" } }}
+                    />
+                    <TextField
+                      fullWidth
+                      label="Username"
+                      name="username"
+                      value={formData.username}
+                      onChange={handleChange}
+                      margin="normal"
+                      variant="outlined"
+                      InputLabelProps={{ style: { color: "#fff" } }}
+                      InputProps={{ style: { color: "#fff" } }}
+                    />
+                    <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+                      <Button variant="contained" color="success" onClick={() => saveUser(user._id)}>
                         Save
-                      </button>
-                      <button
-                        className="btn btn-secondary btn-sm"
-                        onClick={() => setEditingUser(null)}
-                      >
+                      </Button>
+                      <Button variant="outlined" color="inherit" onClick={() => setEditingUser(null)}>
                         Cancel
-                      </button>
-                    </div>
-                  </>
+                      </Button>
+                    </Stack>
+                  </Box>
                 ) : (
-                  <>
-                    <h5 className="card-title">{user.name}</h5>
-                    <p className="card-text">Email: {user.email}</p>
-                    <p className="card-text">Username: {user.username}</p>
-                    <div className="d-flex justify-content-center gap-2">
-                      <button className="btn btn-primary btn-sm" onClick={() => handleEdit(user)}>
+                  <Box>
+                    <Typography variant="h6">{user.name}</Typography>
+                    <Typography variant="body2">Email: {user.email}</Typography>
+                    <Typography variant="body2">Username: {user.username}</Typography>
+                    <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+                      <Button variant="contained" onClick={() => handleEdit(user)}>
                         Edit
-                      </button>
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => deleteUser(user._id)}
-                      >
+                      </Button>
+                      <Button variant="contained" color="error" onClick={() => deleteUser(user._id)}>
                         Delete
-                      </button>
-                    </div>
-                  </>
+                      </Button>
+                    </Stack>
+                  </Box>
                 )}
-              </div>
-            </div>
-          </div>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Container>
   );
 };
 

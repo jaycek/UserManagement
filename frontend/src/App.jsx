@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link as RouterLink } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Button, Container, Box } from '@mui/material';
 import SignUpForm from './components/SignUpForm';
 import LoginForm from './components/LoginForm';
 import AdminDashboard from './components/AdminDashboard';
@@ -7,36 +8,40 @@ import AdminDashboard from './components/AdminDashboard';
 const App = () => {
   return (
     <Router>
-      <div className="container">
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
-          <div className="container-fluid">
-            <Link className="navbar-brand" to="/">User Management Dashboard</Link>
-            <div className="collapse navbar-collapse">
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item " >
-                  <Link className="nav-link" to="/signup" style={{ color: "black" }}>Signup</Link>
-                </li>
-                <li className="nav-item" >
-                  <Link className="nav-link" to="/login" style={{ color: "black" }}>Login</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/admin" style={{ color: "black" }}>Admin Dashboard</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/admin" style={{ color: "black" }}>Products</Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+      <AppBar position="static" sx={{ backgroundColor: '#333' }}>
+        <Toolbar>
+          <Typography variant="h6" component={RouterLink} to="/" sx={{ flexGrow: 1, textDecoration: 'none', color: '#fff' }}>
+            User Management Dashboard
+          </Typography>
+          <Button color="inherit" component={RouterLink} to="/signup">
+            Signup
+          </Button>
+          <Button color="inherit" component={RouterLink} to="/login">
+            Login
+          </Button>
+          <Button color="inherit" component={RouterLink} to="/admin">
+            Admin Dashboard
+          </Button>
+          <Button color="inherit" component={RouterLink} to="/admin">
+            Products
+          </Button>
+        </Toolbar>
+      </AppBar>
 
+      <Container sx={{ mt: 4 }}>
         <Routes>
-          <Route path="/" element={<h1 className="text-center my-4">Welcome to My App!</h1>} />
+          <Route path="/" element={
+            <Box textAlign="center">
+              <Typography variant="h4" gutterBottom>
+                Welcome to My App!
+              </Typography>
+            </Box>
+          } />
           <Route path="/signup" element={<SignUpForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
-      </div>
+      </Container>
     </Router>
   );
 };

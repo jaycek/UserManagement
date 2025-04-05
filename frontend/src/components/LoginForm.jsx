@@ -1,80 +1,93 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios'
+import axios from 'axios';
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Alert,
+} from '@mui/material';
 
 const LoginForm = () => {
-    // Initialize the useForm hook
-    const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-    // Function to handle form submission
-    const onSubmit = (data) => {
-        console.log("Form Data:", data);
-        axios.post('http://localhost:3000/users/login',data)
-        .then(response=>{
-            console.log(response.data)
-            alert("Login successful")
-        })
-        .catch(error=>console.log(error))
-    };
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post('http://localhost:3000/users/login', data);
+      console.log(response.data);
+      alert('Login successful');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    return (
-        <div style={{ width: '300px', margin: '50px auto', textAlign: 'center' }}>
-            <h2>Login Form</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                {/* Email Field */}
-                <div style={{ marginBottom: '15px' }}>
-                    <input
-                        {...register("email", {
-                            required: "Email is required",
-                            pattern: {
-                                value: /^\S+@\S+\.\S+$/,
-                                message: "Invalid email format"
-                            }
-                        })}
-                        type="email"
-                        placeholder="Enter your email"
-                        style={{ width: '100%', padding: '8px' }}
-                    />
-                    {/* Display email errors */}
-                    {errors.email && <p style={{ color: 'red', fontSize: '12px' }}>{errors.email.message}</p>}
-                </div>
+  return (
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          mt: 8,
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 3,
+          bgcolor: 'background.paper',
+          textAlign: 'center',
+        }}
+      >
+        <Typography variant="h5" gutterBottom>
+          Login Form
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <TextField
+            label="Email"
+            type="email"
+            fullWidth
+            margin="normal"
+            {...register('email', {
+              required: 'Email is required',
+              pattern: {
+                value: /^\S+@\S+\.\S+$/,
+                message: 'Invalid email format',
+              },
+            })}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
 
-                {/* Password Field */}
-                <div style={{ marginBottom: '15px' }}>
-                    <input
-                        {...register("password", {
-                            required: "Password is required",
-                            minLength: {
-                                value: 4,
-                                message: "Password must be at least 4 characters"
-                            }
-                        })}
-                        type="password"
-                        placeholder="Enter your password"
-                        style={{ width: '100%', padding: '8px' }}
-                    />
-                    {/* Display password errors */}
-                    {errors.password && <p style={{ color: 'red', fontSize: '12px' }}>{errors.password.message}</p>}
-                </div>
+          <TextField
+            label="Password"
+            type="password"
+            fullWidth
+            margin="normal"
+            {...register('password', {
+              required: 'Password is required',
+              minLength: {
+                value: 4,
+                message: 'Password must be at least 4 characters',
+              },
+            })}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
 
-                {/* Submit Button */}
-                <button
-                    type="submit"
-                    style={{
-                        width: '100%',
-                        padding: '10px',
-                        backgroundColor: '#007BFF',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                    }}
-                >
-                    Login
-                </button>
-            </form>
-        </div>
-    );
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            fullWidth
+            sx={{ mt: 3 }}
+          >
+            Login
+          </Button>
+        </form>
+      </Box>
+    </Container>
+  );
 };
 
 export default LoginForm;

@@ -8,17 +8,15 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#FFCB05', // your goldish yellow
-    },
-    secondary: {
-      main: '#2C0A23', // maroon
+      main: '#FFD700', // Golden yellow for accents (like buttons, headers)
     },
     background: {
-      default: '#110724', // dark background
-      paper: '#1c0e2e', // card/paper background
+      default: '#121212', // Deep dark background
+      paper: '#1e1e1e', // Slightly lighter card background
     },
     text: {
-      primary: '#ffffff',
+      primary: '#ffffff', // White text
+      secondary: '#cccccc', // Slightly muted white
     },
   },
   typography: {

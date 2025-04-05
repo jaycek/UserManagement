@@ -9,10 +9,12 @@ import {
   Button,
   Grid,
   Container,
-  Stack
+  Stack,
+  useTheme,
 } from "@mui/material";
 
 const AdminDashboard = () => {
+  const theme = useTheme(); // Access theme colors
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [formData, setFormData] = useState({ name: "", email: "", username: "" });
@@ -68,7 +70,14 @@ const AdminDashboard = () => {
       <Grid container spacing={4}>
         {users.map((user) => (
           <Grid item xs={12} sm={6} md={4} key={user._id}>
-            <Card sx={{ backgroundColor: "#1e1e1e", color: "white" }}>
+            <Card
+              sx={{
+                backgroundColor: theme.palette.background.paper,
+                color: theme.palette.text.primary,
+                border: `1px solid ${theme.palette.divider}`,
+              }}
+              elevation={3}
+            >
               <CardContent>
                 {editingUser === user._id ? (
                   <Box>
@@ -80,8 +89,6 @@ const AdminDashboard = () => {
                       onChange={handleChange}
                       margin="normal"
                       variant="outlined"
-                      InputLabelProps={{ style: { color: "#fff" } }}
-                      InputProps={{ style: { color: "#fff" } }}
                     />
                     <TextField
                       fullWidth
@@ -91,8 +98,6 @@ const AdminDashboard = () => {
                       onChange={handleChange}
                       margin="normal"
                       variant="outlined"
-                      InputLabelProps={{ style: { color: "#fff" } }}
-                      InputProps={{ style: { color: "#fff" } }}
                     />
                     <TextField
                       fullWidth
@@ -102,8 +107,6 @@ const AdminDashboard = () => {
                       onChange={handleChange}
                       margin="normal"
                       variant="outlined"
-                      InputLabelProps={{ style: { color: "#fff" } }}
-                      InputProps={{ style: { color: "#fff" } }}
                     />
                     <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
                       <Button variant="contained" color="success" onClick={() => saveUser(user._id)}>

@@ -22,6 +22,9 @@ const App = () => {
                 <li className="nav-item">
                   <Link className="nav-link" to="/admin" style={{ color: "black" }}>Admin Dashboard</Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/admin" style={{ color: "black" }}>Products</Link>
+                </li>
               </ul>
             </div>
           </div>
